@@ -7,8 +7,14 @@ using System.Net;
 
 namespace Shared.UnitTests.Helpers;
 
+/// <summary>
+/// Unit tests for the <see cref="HttpClientHelper"/> class.
+/// </summary>
 public class HttpClientHelperTests
 {
+    /// <summary>
+    /// Sends a RESTful HTTP request asynchronously with JSON content type and verifies the successful response deserialization.
+    /// </summary>
     [Fact]
     public async Task SendRESTRequestAsync_JsonContentType_SuccessfulRequest_ReturnsDeserializedObject()
     {
@@ -41,6 +47,9 @@ public class HttpClientHelperTests
         Assert.Equal(expectedResponse.Property2, result.Property2);
     }
 
+    /// <summary>
+    /// Sends a RESTful HTTP request asynchronously with MultipartFormData content type and verifies the successful response deserialization.
+    /// </summary>
     [Fact]
     public async Task SendRESTRequestAsync_MultipartFormDataContentType_SuccessfulRequest_ReturnsDeserializedObject()
     {
@@ -73,6 +82,9 @@ public class HttpClientHelperTests
         Assert.Equal(expectedResponse.Property2, result.Property2);
     }
 
+    /// <summary>
+    /// Sends a RESTful HTTP request asynchronously with FormUrlEncoded content type and verifies the successful response deserialization.
+    /// </summary>
     [Fact]
     public async Task SendRESTRequestAsync_FormUrlEncodedContentType_SuccessfulRequest_ReturnsDeserializedObject()
     {
@@ -105,6 +117,9 @@ public class HttpClientHelperTests
         Assert.Equal(expectedResponse.Property2, result.Property2);
     }
 
+    /// <summary>
+    /// Sends a RESTful HTTP request asynchronously with retry policy and verifies that it retries on transient error.
+    /// </summary>
     [Fact]
     public async Task SendRESTRequestAsync_WithRetryPolicy_RetriesOnTransientError()
     {
@@ -134,6 +149,9 @@ public class HttpClientHelperTests
         Assert.Equal("Success", result);
     }
 
+    /// <summary>
+    /// Sends a RESTful HTTP request asynchronously with circuit breaker policy and verifies that the circuit closes after success.
+    /// </summary>
     [Fact]
     public async Task SendRESTRequestAsync_WithCircuitBreakerPolicy_ClosesCircuitAfterSuccess()
     {
@@ -184,15 +202,35 @@ public class HttpClientHelperTests
 }
 
 #region Sample Request and Response classes for testing
+/// <summary>
+/// Represents a sample request object used for testing purposes.
+/// </summary>
 public class TestRequest
 {
+    /// <summary>
+    /// Gets or sets the value of PropertyA in the request.
+    /// </summary>
     public string PropertyA { get; set; }
+
+    /// <summary>
+    /// Gets or sets the value of PropertyB in the request.
+    /// </summary>
     public int PropertyB { get; set; }
 }
 
+/// <summary>
+/// Represents a sample response object used for testing purposes.
+/// </summary>
 public class TestResponse
 {
+    /// <summary>
+    /// Gets or sets the value of Property1 in the response.
+    /// </summary>
     public string Property1 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the value of Property2 in the response.
+    /// </summary>
     public int Property2 { get; set; }
 }
 #endregion
