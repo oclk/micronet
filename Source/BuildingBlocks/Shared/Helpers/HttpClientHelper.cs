@@ -4,6 +4,7 @@ using Polly.CircuitBreaker;
 using Polly.Retry;
 using Shared.Constants;
 using System.Collections.Specialized;
+using System.Net;
 using System.Reflection;
 using System.Text;
 
@@ -46,88 +47,87 @@ public class HttpClientHelper
         #endregion
     }
 
-    public async Task<TResponse> SendAsync<TRequest, TResponse>(HttpMethod method,
+    public async Task<TResponse> SendRESTRequestAsync<TRequest, TResponse>(HttpMethod method,
         string url,
         TRequest request = default,
-        string contentType = ContentTypes.JSON,
+        string contentType = ContentTypes.APPLICATION_JSON,
         Dictionary<string, string> headers = null,
         Dictionary<string, string> queryParams = null)
     {
-        #region Definitions
-        var httpClient = _httpClientFactory.CreateClient();
-        HttpContent httpContent = null;
-        #endregion
-
-        #region Handle Header & QueryParams
-        if (headers != null)
+        try
         {
-            foreach (var (key, value) in headers)
+            #region Definitions
+            var httpClient = _httpClientFactory.CreateClient();
+            HttpContent httpContent = null;
+            #endregion
+
+            #region Handle Header & QueryParams
+            if (headers != null)
             {
-                httpClient.DefaultRequestHeaders.Add(key, value);
-            }
-        }
-
-        if (queryParams != null)
-        {
-            url = AppendQueryString(url, queryParams);
-        }
-        #endregion
-
-        #region Handle HttpContent
-        if (request != null)
-        {
-            switch (contentType)
-            {
-                case ContentTypes.MULTIPART_FORM_DATA:
-                    httpContent = GetMultipartFormDataContent(request);
-                    break;
-
-                case ContentTypes.FORM_URL_ENCODED:
-                    httpContent = GetFormUrlEncodedContent(request);                    
-                    break;
-
-                case ContentTypes.TEXT:
-                case ContentTypes.JAVASCRIPT:
-                case ContentTypes.HTML:
-                case ContentTypes.XML:
-                    httpContent = new StringContent(request.ToString(), Encoding.UTF8, contentType);
-                    break;
-
-                case ContentTypes.JSON:
-                    httpContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, contentType);
-                    break;
-
-                default:
-                    throw new ArgumentException($"Unsupported content type: {contentType}", nameof(contentType));
-            }
-        }
-        #endregion
-
-        #region Execute & Handle Response
-        return await _circuitBreakerPolicy
-            .WrapAsync(_retryPolicy)
-            .ExecuteAsync(async () =>
-            {
-                using (CancellationTokenSource cancellationTokenSource = new(_timeout))
+                foreach (var (key, value) in headers)
                 {
-                    var requestMessage = new HttpRequestMessage
-                    {
-                        Method = method,
-                        RequestUri = new Uri(url),
-                        Content = httpContent
-                    };
-
-                    HttpResponseMessage response = await httpClient.SendAsync(requestMessage, cancellationTokenSource.Token);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        await HandleErrorResponse(response);
-                    }
-
-                    return await HandleResponse<TResponse>(response);
+                    httpClient.DefaultRequestHeaders.Add(key, value);
                 }
-            });
-        #endregion
+            }
+
+            if (queryParams != null)
+            {
+                url = AppendQueryString(url, queryParams);
+            }
+            #endregion
+
+            #region Handle HttpContent
+            if (request != null)
+            {
+                httpContent = contentType switch
+                {
+                    ContentTypes.MULTIPART_FORM_DATA => GetMultipartFormDataContent(request),
+                    ContentTypes.APPLICATION_X_WWW_FORM_URLENCODED => GetFormUrlEncodedContent(request),
+                    ContentTypes.TEXT_PLAIN or ContentTypes.APPLICATION_JAVASCRIPT or ContentTypes.TEXT_HTML or ContentTypes.APPLICATION_XML => new StringContent(request.ToString(), Encoding.UTF8, contentType),
+                    ContentTypes.APPLICATION_JSON => new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, contentType),
+                    _ => throw new ArgumentException($"Unsupported content type: {contentType}", nameof(contentType)),
+                };
+            }
+            #endregion
+
+            #region Execute & Handle Response
+            return await _circuitBreakerPolicy
+                .WrapAsync(_retryPolicy)
+                .ExecuteAsync(async () =>
+                {
+                    using (CancellationTokenSource cancellationTokenSource = new(_timeout))
+                    {
+                        var requestMessage = new HttpRequestMessage
+                        {
+                            Method = method,
+                            RequestUri = new Uri(url),
+                            Content = httpContent
+                        };
+
+                        HttpResponseMessage response = await httpClient.SendAsync(requestMessage, cancellationTokenSource.Token);
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            await HandleErrorResponse(response);
+                        }
+
+                        return await HandleResponse<TResponse>(response);
+                    }
+                });
+            #endregion
+        }
+        catch (WebException ex)
+        {
+            // Handle web exception
+            Console.WriteLine($"Internal Server Error: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // Handle other exception
+            Console.WriteLine($"Internal Server Error: {ex.Message}");
+            throw;
+        }
     }
 
     private string AppendQueryString(string url, Dictionary<string, string> queryParams)
@@ -213,7 +213,7 @@ public class HttpClientHelper
 
         if (response.IsSuccessStatusCode)
         {
-            if (response.Content.Headers.ContentType?.MediaType == ContentTypes.JSON)
+            if (response.Content.Headers.ContentType?.MediaType == ContentTypes.APPLICATION_JSON)
             {
                 return JsonConvert.DeserializeObject<T>(content);
             }
