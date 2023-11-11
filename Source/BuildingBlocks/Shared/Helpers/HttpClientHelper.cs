@@ -10,6 +10,9 @@ using System.Text;
 
 namespace Shared.Helpers;
 
+/// <summary>
+/// Utility class for making HTTP requests using HttpClient with advanced features like circuit breaker, retry policies, and custom error handling.
+/// </summary>
 public class HttpClientHelper
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -17,10 +20,14 @@ public class HttpClientHelper
     private readonly AsyncRetryPolicy _retryPolicy;
     private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 
-    public HttpClientHelper(IHttpClientFactory httpClientFactory,
-        TimeSpan circuitBreakerOpenDuration,
-        int circuitBreakerThreshold,
-        int retryAttempts)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HttpClientHelper"/> class.
+    /// </summary>
+    /// <param name="httpClientFactory">The HttpClientFactory instance to create HttpClient.</param>
+    /// <param name="circuitBreakerOpenDuration">The duration for which the circuit breaker remains open after reaching the threshold.</param>
+    /// <param name="circuitBreakerThreshold">The threshold count for triggering the circuit breaker.</param>
+    /// <param name="retryAttempts">The number of retry attempts in case of a transient error.</param>
+    public HttpClientHelper(IHttpClientFactory httpClientFactory, TimeSpan circuitBreakerOpenDuration, int circuitBreakerThreshold, int retryAttempts)
     {
         _httpClientFactory = httpClientFactory;
 
@@ -47,6 +54,18 @@ public class HttpClientHelper
         #endregion
     }
 
+    /// <summary>
+    /// Sends a RESTful HTTP request asynchronously and returns the response.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request object.</typeparam>
+    /// <typeparam name="TResponse">The type of the response object.</typeparam>
+    /// <param name="method">The HTTP method (GET, POST, PUT, etc.).</param>
+    /// <param name="url">The URL of the request.</param>
+    /// <param name="request">The request object.</param>
+    /// <param name="contentType">The content type of the request.</param>
+    /// <param name="headers">The headers to be included in the request.</param>
+    /// <param name="queryParams">The query parameters to be included in the request URL.</param>
+    /// <returns>A task representing the asynchronous operation. The task result is the deserialized response object.</returns>
     public async Task<TResponse> SendRESTRequestAsync<TRequest, TResponse>(HttpMethod method,
         string url,
         TRequest request = default,
@@ -130,6 +149,12 @@ public class HttpClientHelper
         }
     }
 
+    /// <summary>
+    /// Appends query parameters to the given URL.
+    /// </summary>
+    /// <param name="url">The original URL.</param>
+    /// <param name="queryParams">The query parameters to be appended.</param>
+    /// <returns>The modified URL with appended query parameters.</returns>
     private string AppendQueryString(string url, Dictionary<string, string> queryParams)
     {
         UriBuilder uriBuilder = new(url);
@@ -144,6 +169,12 @@ public class HttpClientHelper
         return uriBuilder.ToString();
     }
 
+    /// <summary>
+    /// Creates a MultipartFormDataContent object from the given request object.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request object.</typeparam>
+    /// <param name="request">The request object.</param>
+    /// <returns>The MultipartFormDataContent object.</returns>
     private MultipartFormDataContent GetMultipartFormDataContent<TRequest>(TRequest request)
     {
         MultipartFormDataContent multipartFormDataContent = new();
@@ -174,6 +205,12 @@ public class HttpClientHelper
         return multipartFormDataContent;
     }
 
+    /// <summary>
+    /// Creates a FormUrlEncodedContent object from the given request object.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request object.</typeparam>
+    /// <param name="request">The request object.</param>
+    /// <returns>The FormUrlEncodedContent object.</returns>
     private FormUrlEncodedContent GetFormUrlEncodedContent<TRequest>(TRequest request)
     {
         Dictionary<string, string> collection = request.GetType()
@@ -183,6 +220,11 @@ public class HttpClientHelper
         return new FormUrlEncodedContent(collection);
     }
 
+    /// <summary>
+    /// Handles the error response from the HTTP request.
+    /// </summary>
+    /// <param name="response">The HTTP response message.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     private async Task HandleErrorResponse(HttpResponseMessage response)
     {
         var content = await response.Content.ReadAsStringAsync();
@@ -207,6 +249,12 @@ public class HttpClientHelper
         }
     }
 
+    /// <summary>
+    /// Handles the success response from the HTTP request.
+    /// </summary>
+    /// <typeparam name="T">The type of the response object.</typeparam>
+    /// <param name="response">The HTTP response message.</param>
+    /// <returns>The deserialized response object.</returns>
     private async Task<T> HandleResponse<T>(HttpResponseMessage response)
     {
         var content = await response.Content.ReadAsStringAsync();
