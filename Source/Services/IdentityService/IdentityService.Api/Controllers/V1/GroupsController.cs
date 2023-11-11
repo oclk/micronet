@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using IdentityService.Application.Features.Groups.Queries.GetGroupsCount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,14 @@ namespace IdentityService.Api.Controllers.V1;
 public class GroupsController : BaseController
 {
     [HttpGet("Count")]
-    public IActionResult GetGroupsCount(string realm)
+    public async Task<GetGroupsCountQueryResponse> GetGroupsCount(string realm, [FromQuery] GetGroupsCountQueryParameters queryParameters)
     {
-        return Ok();
+        GetGroupsCountQuery getGroupsCountQuery = new()
+        {
+            Realm = realm,
+            QueryParameters = queryParameters,
+        };
+        return await Mediator.Send(getGroupsCountQuery);
     }
 
     [HttpGet]

@@ -71,7 +71,7 @@ public class HttpClientHelper
         TRequest request = default,
         string contentType = ContentTypes.APPLICATION_JSON,
         Dictionary<string, string> headers = null,
-        Dictionary<string, string> queryParams = null)
+        Dictionary<string, string> queryParameters = null)
     {
         try
         {
@@ -80,7 +80,7 @@ public class HttpClientHelper
             HttpContent httpContent = null;
             #endregion
 
-            #region Handle Header & QueryParams
+            #region Handle Header & QueryParameters
             if (headers != null)
             {
                 foreach (var (key, value) in headers)
@@ -89,9 +89,9 @@ public class HttpClientHelper
                 }
             }
 
-            if (queryParams != null)
+            if (queryParameters != null)
             {
-                url = AppendQueryString(url, queryParams);
+                url = AppendQueryString(url, queryParameters);
             }
             #endregion
 
@@ -162,7 +162,10 @@ public class HttpClientHelper
 
         foreach (var (key, value) in queryParams)
         {
-            nameValueCollection[key] = value;
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(value))
+            {
+                nameValueCollection[key] = value;
+            }
         }
 
         uriBuilder.Query = nameValueCollection.ToString();
