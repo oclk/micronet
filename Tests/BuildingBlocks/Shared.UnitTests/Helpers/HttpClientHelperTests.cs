@@ -1,6 +1,5 @@
 ﻿using Moq;
 using Newtonsoft.Json;
-using Polly;
 using Shared.Constants;
 using Shared.Helpers;
 using System.Net;
@@ -159,15 +158,6 @@ public class HttpClientHelperTests
         var httpClientFactoryMock = new Mock<IHttpClientFactory>();
         var httpClientMock = new Mock<HttpClient>();
 
-        var circuitBreakerPolicy = Policy.Handle<Exception>()
-            .CircuitBreakerAsync(2, TimeSpan.FromSeconds(10), onBreak: (ex, breakDelay) =>
-            {
-                Console.WriteLine($"Circuit breaker opened due to {ex.Message}. Waiting {breakDelay.TotalSeconds} seconds before trying again.");
-            },
-            onReset: () => Console.WriteLine("Circuit breaker closed."),
-            onHalfOpen: () => Console.WriteLine("Circuit breaker half-opened.")
-        );
-
         var transientError = new HttpRequestException("Transient error");
 
         httpClientMock.Setup(x => x.SendAsync(It.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>()))
@@ -178,23 +168,18 @@ public class HttpClientHelperTests
         var httpClientHelper = new HttpClientHelper(httpClientFactoryMock.Object, TimeSpan.FromSeconds(1), 2, 3);
 
         // Act
-        await Assert.ThrowsAsync<Exception>(async () =>
+        await Assert.ThrowsAsync<HttpRequestException>(async () =>
         {
-            await circuitBreakerPolicy.ExecuteAsync(async () =>
-            {
-                await httpClientHelper.SendRESTRequestAsync<TestRequest, string>(
+            await httpClientHelper.SendRESTRequestAsync<TestRequest, string>(
                     HttpMethod.Get, "http://example.com", new TestRequest(), ContentTypes.TEXT_PLAIN, null, null);
-            });
         });
-
-        // Circuit breaker should be open at this point
 
         // Reset circuit breaker
         await Task.Delay(TimeSpan.FromSeconds(11));
 
-        await circuitBreakerPolicy.ExecuteAsync(async () =>
+        // This should not throw CircuitBrokenException
+        await Assert.ThrowsAsync<HttpRequestException>(async () =>
         {
-            // This should not throw CircuitBrokenException
             await httpClientHelper.SendRESTRequestAsync<TestRequest, string>(
                 HttpMethod.Get, "http://example.com", new TestRequest(), ContentTypes.TEXT_PLAIN, null, null);
         });
