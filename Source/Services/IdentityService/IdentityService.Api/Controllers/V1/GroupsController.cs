@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning;
 using IdentityService.Application.Features.Groups.Commands.DeleteGroup;
 using IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
+using IdentityService.Application.Features.Groups.Queries.GetGroup;
+using IdentityService.Application.Features.Groups.Queries.GetGroupManagementPermissions;
 using IdentityService.Application.Features.Groups.Queries.GetGroups;
 using IdentityService.Application.Features.Groups.Queries.GetGroupsCount;
 using Microsoft.AspNetCore.Authorization;
@@ -84,16 +86,38 @@ public class GroupsController : BaseController
         await Mediator.Send(deleteGroupCommand);
     }
 
+    /// <summary>
+    /// Get group
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id}")]
-    public IActionResult GetGroup(string realm, string id)
+    public async Task<GetGroupQueryGroupRepresentation> GetGroup(string realm, string id)
     {
-        return Ok();
+        GetGroupQuery getGroupQuery = new()
+        {
+            Realm = realm,
+            Id = id,
+        };
+        return await Mediator.Send(getGroupQuery);
     }
 
+    /// <summary>
+    /// Return object stating whether client Authorization permissions have been initialized or not and a reference
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id}/Management/Permissions")]
-    public IActionResult GetGroupManagementPermissions(string realm, string id)
+    public async Task<GetGroupManagementPermissionsQueryManagementPermissionReference> GetGroupManagementPermissions(string realm, string id)
     {
-        return Ok();
+        GetGroupManagementPermissionsQuery getGroupManagementPermissionsQuery = new()
+        {
+            Realm = realm,
+            Id = id,
+        };
+        return await Mediator.Send(getGroupManagementPermissionsQuery);
     }
 
     [HttpPut("{id}/Management/Permissions")]
