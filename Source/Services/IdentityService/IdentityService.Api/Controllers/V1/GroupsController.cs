@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using IdentityService.Application.Features.Groups.Commands.SetOrCreateGroup;
 using IdentityService.Application.Features.Groups.Queries.GetGroups;
 using IdentityService.Application.Features.Groups.Queries.GetGroupsCount;
 using Microsoft.AspNetCore.Authorization;
@@ -45,10 +46,24 @@ public class GroupsController : BaseController
         return await Mediator.Send(getGroupsQuery);
     }
 
+    /// <summary>
+    /// Set or create child.
+    /// This will just set the parent if it exists. Create it and set the parent if the group doesn’t exist.
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <param name="setOrCreateSubGroupCommandGroupRepresentation"></param>
+    /// <returns></returns>
     [HttpPost("{id}/Children")]
-    public IActionResult SetOrCreateGroup(string realm, string id)
+    public async Task<SetOrCreateSubGroupCommandGroupRepresentation> SetOrCreateSubGroup(string realm, string id, [FromBody] SetOrCreateSubGroupCommandGroupRepresentation setOrCreateSubGroupCommandGroupRepresentation)
     {
-        return Ok();
+        SetOrCreateSubGroupCommand setOrCreateSubGroupCommand = new()
+        {
+            Realm = realm,
+            Id = id,
+            SetOrCreateSubGroupCommandGroupRepresentation = setOrCreateSubGroupCommandGroupRepresentation,
+        };
+        return await Mediator.Send(setOrCreateSubGroupCommand);
     }
 
     [HttpDelete("{id}")]
