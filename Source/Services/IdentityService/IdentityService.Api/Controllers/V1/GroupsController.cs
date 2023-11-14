@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using IdentityService.Application.Features.Groups.Commands.DeleteGroup;
 using IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 using IdentityService.Application.Features.Groups.Queries.GetGroups;
 using IdentityService.Application.Features.Groups.Queries.GetGroupsCount;
@@ -66,10 +67,21 @@ public class GroupsController : BaseController
         return await Mediator.Send(setOrCreateSubGroupCommand);
     }
 
+    /// <summary>
+    /// This will delete Group.
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
-    public IActionResult DeleteGroup(string realm, string id)
+    public async Task DeleteGroup(string realm, string id)
     {
-        return Ok();
+        DeleteGroupCommand deleteGroupCommand = new()
+        {
+            Realm = realm,
+            Id = id,
+        };
+        await Mediator.Send(deleteGroupCommand);
     }
 
     [HttpGet("{id}")]
