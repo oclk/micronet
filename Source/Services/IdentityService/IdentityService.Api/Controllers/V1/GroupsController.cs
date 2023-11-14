@@ -120,6 +120,12 @@ public class GroupsController : BaseController
         return await Mediator.Send(getGroupManagementPermissionsQuery);
     }
 
+    /// <summary>
+    /// Return object stating whether client Authorization permissions have been initialized or not and a reference
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpPut("{id}/Management/Permissions")]
     public IActionResult UpdateGroupManagementPermissions(string realm, string id)
     {
