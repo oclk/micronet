@@ -50,7 +50,7 @@ public class SetOrCreateSubGroupCommandHandler : IRequestHandler<SetOrCreateSubG
         #endregion
 
         // Get & Return Response
-        SetOrCreateSubGroupCommandGroupRepresentation response = await _httpClientHelper.SendRESTRequestAsync<SetOrCreateSubGroupCommand, SetOrCreateSubGroupCommandGroupRepresentation>(HttpMethod.Post, url, request, headers: headers);
+        SetOrCreateSubGroupCommandGroupRepresentation response = await _httpClientHelper.SendRESTRequestAsync<SetOrCreateSubGroupCommandGroupRepresentation, SetOrCreateSubGroupCommandGroupRepresentation>(HttpMethod.Post, url, request.SetOrCreateSubGroupCommandGroupRepresentation, headers: headers);
 
         return response;
     }

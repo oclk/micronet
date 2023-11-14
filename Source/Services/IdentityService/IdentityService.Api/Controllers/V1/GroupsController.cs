@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using IdentityService.Application.Features.Groups.Commands.DeleteGroup;
 using IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
+using IdentityService.Application.Features.Groups.Commands.UpdateGroupManagementPermissions;
 using IdentityService.Application.Features.Groups.Queries.GetGroup;
 using IdentityService.Application.Features.Groups.Queries.GetGroupManagementPermissions;
 using IdentityService.Application.Features.Groups.Queries.GetGroups;
@@ -127,9 +128,15 @@ public class GroupsController : BaseController
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("{id}/Management/Permissions")]
-    public IActionResult UpdateGroupManagementPermissions(string realm, string id)
+    public async Task<UpdateGroupManagementPermissionsCommandManagementPermissionReference> UpdateGroupManagementPermissions(string realm, string id, [FromBody] UpdateGroupManagementPermissionsCommandManagementPermissionReference updateGroupManagementPermissionsCommandManagementPermissionReference)
     {
-        return Ok();
+        UpdateGroupManagementPermissionsCommand updateGroupManagementPermissionsCommand = new()
+        {
+            Realm = realm,
+            Id = id,
+            UpdateGroupManagementPermissionsCommandManagementPermissionReference = updateGroupManagementPermissionsCommandManagementPermissionReference,
+        };
+        return await Mediator.Send(updateGroupManagementPermissionsCommand);
     }
 
     [HttpGet("{id}/Members")]
