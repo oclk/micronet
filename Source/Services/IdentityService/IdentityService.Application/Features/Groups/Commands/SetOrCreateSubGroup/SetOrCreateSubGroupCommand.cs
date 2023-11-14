@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateGroup;
+namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 
 /// <summary>
 /// Represents a command to set or create a sub-group within a specified group.

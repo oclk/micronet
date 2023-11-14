@@ -1,4 +1,4 @@
-﻿namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateGroup;
+﻿namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 
 /// <summary>
 /// Represents the data structure for the response of setting or creating a sub-group within a specified group.

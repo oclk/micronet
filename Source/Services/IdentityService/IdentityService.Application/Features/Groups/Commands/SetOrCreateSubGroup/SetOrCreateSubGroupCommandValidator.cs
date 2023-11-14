@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateGroup;
+namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 
 /// <summary>
 /// Validator class for validating the parameters of the SetOrCreateSubGroupCommand.

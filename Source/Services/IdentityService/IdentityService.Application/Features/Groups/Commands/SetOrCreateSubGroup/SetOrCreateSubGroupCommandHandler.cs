@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Shared.Helpers;
 
-namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateGroup;
+namespace IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 
 /// <summary>
 /// Handles the command to set or create a sub-group within a specified group.

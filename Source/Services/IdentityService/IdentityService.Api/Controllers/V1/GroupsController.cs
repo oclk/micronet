@@ -1,5 +1,5 @@
 ﻿using Asp.Versioning;
-using IdentityService.Application.Features.Groups.Commands.SetOrCreateGroup;
+using IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 using IdentityService.Application.Features.Groups.Queries.GetGroups;
 using IdentityService.Application.Features.Groups.Queries.GetGroupsCount;
 using Microsoft.AspNetCore.Authorization;
