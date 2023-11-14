@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
@@ -27,11 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5E338017-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{54657503-E8A9-4D43-B1B7-C71F52B64393}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Source\BuildingBlocks\Shared\Shared.csproj", "{2FD98183-56AF-4506-83EE-80F92FF5FAAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Source\BuildingBlocks\Shared\Shared.csproj", "{2FD98183-56AF-4506-83EE-80F92FF5FAAB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{8BA26E54-314E-4781-B1E3-EE079A2AD954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.UnitTests", "Tests\BuildingBlocks\Shared.UnitTests\Shared.UnitTests.csproj", "{D04B5F95-E90B-464C-911F-0CB50853B91A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.UnitTests", "Tests\BuildingBlocks\Shared.UnitTests\Shared.UnitTests.csproj", "{D04B5F95-E90B-464C-911F-0CB50853B91A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

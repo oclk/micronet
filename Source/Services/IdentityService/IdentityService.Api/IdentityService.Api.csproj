@@ -1,32 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>c3d4bc67-d4fd-4194-931a-6f945a6b49ea</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..\..</DockerfileContext>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Abstractions" Version="7.0.0" />
     <PackageReference Include="Asp.Versioning.Http" Version="7.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc" Version="7.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="7.1.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.13" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\IdentityService.Infrastructure\IdentityService.Infrastructure.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Common\Filters\" />
     <Folder Include="Common\Middlewares\" />
   </ItemGroup>
-
 </Project>
