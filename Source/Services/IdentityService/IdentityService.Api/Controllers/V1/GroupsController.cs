@@ -4,6 +4,7 @@ using IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 using IdentityService.Application.Features.Groups.Commands.UpdateGroupManagementPermissions;
 using IdentityService.Application.Features.Groups.Queries.GetGroup;
 using IdentityService.Application.Features.Groups.Queries.GetGroupManagementPermissions;
+using IdentityService.Application.Features.Groups.Queries.GetGroupMembers;
 using IdentityService.Application.Features.Groups.Queries.GetGroups;
 using IdentityService.Application.Features.Groups.Queries.GetGroupsCount;
 using Microsoft.AspNetCore.Authorization;
@@ -139,10 +140,22 @@ public class GroupsController : BaseController
         return await Mediator.Send(updateGroupManagementPermissionsCommand);
     }
 
+    /// <summary>
+    /// Get users Returns a stream of users, filtered according to query parameters.
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpGet("{id}/Members")]
-    public IActionResult GetGroupMembers(string realm, string id)
+    public async Task<GetGroupMembersQueryResponse> GetGroupMembers(string realm, string id, [FromQuery] GetGroupMembersQueryParameters queryParameters)
     {
-        return Ok();
+        GetGroupMembersQuery getGroupMembersQuery = new()
+        {
+            Realm = realm,
+            Id = id,
+            QueryParameters = queryParameters,
+        };
+        return await Mediator.Send(getGroupMembersQuery);
     }
 
     [HttpPut("{id}")]
