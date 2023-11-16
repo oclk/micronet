@@ -16,4 +16,5 @@ public interface IGroupsHttpClient
     /// <param name="cancellationToken">Optional cancellation token for canceling the asynchronous operation.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation. The result contains the response with the group count.</returns>
     Task<GetGroupsCountResponse> GetGroupsCount(GetGroupsCountRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
+    Task<List<GetGroupsResponse>> GetGroups(GetGroupsRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
 }

@@ -31,16 +31,11 @@ public class GetGroupsCountQueryHandler(IGroupsHttpClient groupsHttpClient, IHtt
         {
             { "Authorization", jwtToken }
         };
-
-        // Generate QueryParameters
-        Dictionary<string, string> queryParameters = request?.QueryParameters?.GetType()
-                  .GetProperties()
-                  .ToDictionary(prop => prop.Name, prop => prop.GetValue(request?.QueryParameters)?.ToString());
         #endregion
 
         // Get & Return Response
         GetGroupsCountRequest getGroupsCountRequest = mapper.Map<GetGroupsCountQuery, GetGroupsCountRequest>(request);
-        GetGroupsCountResponse getGroupsCountResponse = await groupsHttpClient.GetGroupsCount(getGroupsCountRequest, headers, queryParameters, cancellationToken);
+        GetGroupsCountResponse getGroupsCountResponse = await groupsHttpClient.GetGroupsCount(getGroupsCountRequest, headers, request.QueryParameters, cancellationToken);
         GetGroupsCountQueryVm response = mapper.Map<GetGroupsCountQueryVm>(getGroupsCountResponse);
 
         return response;

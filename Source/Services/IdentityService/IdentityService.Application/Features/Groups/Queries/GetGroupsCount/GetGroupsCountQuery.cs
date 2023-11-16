@@ -15,5 +15,5 @@ public class GetGroupsCountQuery : IRequest<GetGroupsCountQueryVm>
     /// <summary>
     /// Gets or sets parameters to filter the group count.
     /// </summary>
-    public GetGroupsCountQueryParameters QueryParameters { get; set; }
+    public Dictionary<string, string> QueryParameters { get; set; }
 }

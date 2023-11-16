@@ -5,7 +5,7 @@ namespace IdentityService.Application.Features.Groups.Queries.GetGroups;
 /// <summary>
 /// Represents a query to retrieve groups with optional filtering parameters.
 /// </summary>
-public class GetGroupsQuery : IRequest<List<GetGroupsQueryResponse>>
+public class GetGroupsQuery : IRequest<List<GetGroupsQueryVm>>
 {
     /// <summary>
     /// Gets or sets the realm from which to retrieve the groups.
@@ -15,6 +15,6 @@ public class GetGroupsQuery : IRequest<List<GetGroupsQueryResponse>>
     /// <summary>
     /// Gets or sets parameters to filter the groups.
     /// </summary>
-    public GetGroupsQueryParameters QueryParameters { get; set; }
+    public Dictionary<string, string> QueryParameters { get; set; }
 }
 

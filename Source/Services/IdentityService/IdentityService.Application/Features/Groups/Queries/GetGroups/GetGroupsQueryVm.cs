@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the response object containing group details.
 /// </summary>
-public class GetGroupsQueryResponse
+public class GetGroupsQueryVm
 {
     /// <summary>
     /// Gets or sets the identifier of the group.
@@ -23,5 +23,5 @@ public class GetGroupsQueryResponse
     /// <summary>
     /// Gets or sets subgroups of the current group.
     /// </summary>
-    public List<GetGroupsQueryResponse> SubGroups { get; set; }
+    public List<GetGroupsQueryVm> SubGroups { get; set; }
 }

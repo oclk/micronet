@@ -38,4 +38,17 @@ public class GroupsHttpClient : IGroupsHttpClient
             return response;
         }
     }
+
+    public async Task<List<GetGroupsResponse>> GetGroups(GetGroupsRequest request, Dictionary<string, string>? headers = null, Dictionary<string, string>? queryParameters = null, CancellationToken cancellationToken = default)
+    {
+        // Create an HTTP client specifically configured for the "groups" endpoint.
+        using (var httpClient = _httpClientFactory.CreateClient("admin"))
+        {
+            // Send a RESTful request to the endpoint using the provided request parameters.
+            List<GetGroupsResponse> response = await httpClient.SendRESTRequestAsync<GetGroupsRequest, List<GetGroupsResponse>>(HttpMethod.Get, $"{request.Realm}/groups", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
+
+            // Return the obtained response containing the group count.
+            return response;
+        }
+    }
 }

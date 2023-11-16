@@ -24,7 +24,7 @@ public class GroupsController : BaseController
     /// <param name="queryParameters"></param>
     /// <returns></returns>
     [HttpGet("Count")]
-    public async Task<GetGroupsCountQueryVm> GetGroupsCount(string realm, [FromQuery] GetGroupsCountQueryParameters queryParameters)
+    public async Task<GetGroupsCountQueryVm> GetGroupsCount(string realm, [FromQuery] Dictionary<string, string> queryParameters)
     {
         GetGroupsCountQuery getGroupsCountQuery = new()
         {
@@ -41,7 +41,7 @@ public class GroupsController : BaseController
     /// <param name="queryParameters"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<List<GetGroupsQueryResponse>> GetGroups(string realm, [FromQuery] GetGroupsQueryParameters queryParameters)
+    public async Task<List<GetGroupsQueryVm>> GetGroups(string realm, [FromQuery] Dictionary<string, string> queryParameters)
     {
         GetGroupsQuery getGroupsQuery = new()
         {
