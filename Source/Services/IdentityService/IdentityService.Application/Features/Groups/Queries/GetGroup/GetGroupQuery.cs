@@ -5,7 +5,7 @@ namespace IdentityService.Application.Features.Groups.Queries.GetGroup;
 /// <summary>
 /// Represents a query to retrieve information about a specific group.
 /// </summary>
-public class GetGroupQuery : IRequest<GetGroupQueryGroupRepresentation>
+public class GetGroupQuery : IRequest<GetGroupQueryVm>
 {
     /// <summary>
     /// Gets or sets the realm to which the group belongs.

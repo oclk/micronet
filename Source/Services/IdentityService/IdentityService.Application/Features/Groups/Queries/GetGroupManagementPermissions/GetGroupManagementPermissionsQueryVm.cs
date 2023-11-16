@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a reference for the management permissions associated with a group in the context of the GetGroupManagementPermissions query.
 /// </summary>
-public class GetGroupManagementPermissionsQueryManagementPermissionReference
+public class GetGroupManagementPermissionsQueryVm
 {
     /// <summary>
     /// Gets or sets a value indicating whether the management permission is enabled or not.

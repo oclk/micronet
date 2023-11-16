@@ -1,20 +1,34 @@
-﻿using IdentityService.Application.Common.Models.Clients.Groups;
+﻿namespace IdentityService.Application.Common.Interfaces.Clients;
 
-namespace IdentityService.Application.Common.Interfaces.Clients;
+#region Groups Http Client Models
+// GetGroup Model(s)
+public record GetGroupRequest(string Realm, string Id);
 
-/// <summary>
-/// Interface defining the contract for an HTTP client to interact with the Groups service.
-/// </summary>
+// GetGroupManagementPermissions Model(s)
+public record GetGroupManagementPermissionsRequest(string Realm, string Id);
+public record GetGroupManagementPermissionsResponse(bool Enabled, string Resource, Dictionary<string, string> ScopePermissions);
+
+// GetGroupMembers Model(s)
+public record GetGroupMembersRequest(string Realm, string Id);
+public record GetGroupMembersResponse();
+
+// GetGroups Model(s)
+public record GetGroupsRequest(string Realm, string Id);
+public record GetGroupsResponse(string Id, string Name, string Path, List<GetGroupsResponse> SubGroups);
+
+// GetGroupsCount Model(s)
+public record GetGroupsCountRequest(string Realm);
+public record GetGroupsCountResponse(long Count);
+
+// Common Model(s)
+public record GroupRepresentation(string Id, string Name, string Path, Dictionary<string, string> Attributes, List<string> RealmRoles, Dictionary<string, string> ClientRoles, List<GroupRepresentation> SubGroups, List<bool> Access);
+#endregion
+
 public interface IGroupsHttpClient
 {
-    /// <summary>
-    /// Retrieves the count of groups based on the provided request parameters.
-    /// </summary>
-    /// <param name="request">The request containing parameters for obtaining group count.</param>
-    /// <param name="headers">Optional headers to include in the HTTP request.</param>
-    /// <param name="queryParameters">Optional query parameters to include in the HTTP request.</param>
-    /// <param name="cancellationToken">Optional cancellation token for canceling the asynchronous operation.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation. The result contains the response with the group count.</returns>
-    Task<GetGroupsCountResponse> GetGroupsCount(GetGroupsCountRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
+    Task<GroupRepresentation> GetGroup(GetGroupRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
+    Task<GetGroupManagementPermissionsResponse> GetGroupManagementPermissions(GetGroupManagementPermissionsRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
+    Task<GetGroupMembersResponse> GetGroupMembers(GetGroupMembersRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
     Task<List<GetGroupsResponse>> GetGroups(GetGroupsRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
+    Task<GetGroupsCountResponse> GetGroupsCount(GetGroupsCountRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
 }

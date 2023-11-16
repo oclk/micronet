@@ -95,7 +95,7 @@ public class GroupsController : BaseController
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    public async Task<GetGroupQueryGroupRepresentation> GetGroup(string realm, string id)
+    public async Task<GetGroupQueryVm> GetGroup(string realm, string id)
     {
         GetGroupQuery getGroupQuery = new()
         {
@@ -112,7 +112,7 @@ public class GroupsController : BaseController
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}/Management/Permissions")]
-    public async Task<GetGroupManagementPermissionsQueryManagementPermissionReference> GetGroupManagementPermissions(string realm, string id)
+    public async Task<GetGroupManagementPermissionsQueryVm> GetGroupManagementPermissions(string realm, string id)
     {
         GetGroupManagementPermissionsQuery getGroupManagementPermissionsQuery = new()
         {
@@ -147,7 +147,7 @@ public class GroupsController : BaseController
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id}/Members")]
-    public async Task<GetGroupMembersQueryResponse> GetGroupMembers(string realm, string id, [FromQuery] GetGroupMembersQueryParameters queryParameters)
+    public async Task<GetGroupMembersQueryVm> GetGroupMembers(string realm, string id, [FromQuery] Dictionary<string, string> queryParameters)
     {
         GetGroupMembersQuery getGroupMembersQuery = new()
         {

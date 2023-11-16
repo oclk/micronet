@@ -5,7 +5,7 @@ namespace IdentityService.Application.Features.Groups.Queries.GetGroupManagement
 /// <summary>
 /// Represents a query to retrieve management permissions associated with a specific group.
 /// </summary>
-public class GetGroupManagementPermissionsQuery : IRequest<GetGroupManagementPermissionsQueryManagementPermissionReference>
+public class GetGroupManagementPermissionsQuery : IRequest<GetGroupManagementPermissionsQueryVm>
 {
     /// <summary>
     /// Gets or sets the realm of the group for which management permissions will be retrieved.

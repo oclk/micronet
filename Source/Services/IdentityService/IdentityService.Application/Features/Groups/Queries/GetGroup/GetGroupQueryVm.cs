@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the data structure for retrieving information about a specific group.
 /// </summary>
-public class GetGroupQueryGroupRepresentation
+public class GetGroupQueryVm
 {
     /// <summary>
     /// Gets or sets the identifier of the group.
@@ -38,7 +38,7 @@ public class GetGroupQueryGroupRepresentation
     /// <summary>
     /// Gets or sets the list of sub-groups under the current group.
     /// </summary>
-    public List<GetGroupQueryGroupRepresentation> SubGroups { get; set; }
+    public List<GetGroupQueryVm> SubGroups { get; set; }
 
     /// <summary>
     /// Gets or sets the list of access permissions for the group.

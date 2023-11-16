@@ -5,7 +5,7 @@ namespace IdentityService.Application.Features.Groups.Queries.GetGroupMembers;
 /// <summary>
 /// Represents the request to query the members of a group using GetGroupMembersQuery.
 /// </summary>
-public class GetGroupMembersQuery : IRequest<GetGroupMembersQueryResponse>
+public class GetGroupMembersQuery : IRequest<GetGroupMembersQueryVm>
 {
     /// <summary>
     /// Parameter representing the real-world identity of the group.
@@ -20,5 +20,5 @@ public class GetGroupMembersQuery : IRequest<GetGroupMembersQueryResponse>
     /// <summary>
     /// Object containing custom parameters used to query group members.
     /// </summary>
-    public GetGroupMembersQueryParameters QueryParameters { get; set; }
+    public Dictionary<string, string> QueryParameters { get; set; }
 }
