@@ -7,4 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IdentityService.Application\IdentityService.Application.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Persistence\" />
+  </ItemGroup>
 </Project>

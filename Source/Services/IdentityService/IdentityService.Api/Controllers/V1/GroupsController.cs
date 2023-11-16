@@ -24,7 +24,7 @@ public class GroupsController : BaseController
     /// <param name="queryParameters"></param>
     /// <returns></returns>
     [HttpGet("Count")]
-    public async Task<GetGroupsCountQueryResponse> GetGroupsCount(string realm, [FromQuery] GetGroupsCountQueryParameters queryParameters)
+    public async Task<GetGroupsCountQueryVm> GetGroupsCount(string realm, [FromQuery] GetGroupsCountQueryParameters queryParameters)
     {
         GetGroupsCountQuery getGroupsCountQuery = new()
         {

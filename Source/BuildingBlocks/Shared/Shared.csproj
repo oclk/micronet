@@ -4,8 +4,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Extensions\" />
-    <Folder Include="Models\" />
     <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>

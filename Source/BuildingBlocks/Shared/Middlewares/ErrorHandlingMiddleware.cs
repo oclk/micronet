@@ -1,46 +1,66 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Shared.Constants;
+using Shared.Models;
 using System.Net;
 
 namespace Shared.Middlewares;
 
-public class ErrorHandlingMiddleware
+/// <summary>
+/// Middleware for handling errors during request processing and providing detailed logging and appropriate error responses.
+/// </summary>
+/// <param name="next"></param>
+/// <param name="logger"></param>
+public class ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-
-    public ErrorHandlingMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
+    /// <summary>
+    /// Invokes the middleware to handle errors during request processing.
+    /// </summary>
+    /// <param name="context">The HTTP context for the current request.</param>
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
-            // LogException(ex);
+            // Detailed logging
+            logger.LogError(ex, "An error occurred during request processing.");
 
-            // Special error pages can be shown depending on the error status
-            if (ex is ApplicationException)
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync("Özel bir hata oluştu.");
-            }
-            else if (ex is UnauthorizedAccessException)
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync("Yetkisiz erişim.");
-            }
-            else
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                context.Response.ContentType = "application/plain";
-                await context.Response.WriteAsync("Bir hata oluştu.");
-            }
+            // Determining Status Code according to error status
+            HttpStatusCode statusCode = GetStatusCode(ex);
+
+            // Prepare error response
+            Result<object> response = new() { Message = ex.Message };
+            string responseJsonStr = JsonConvert.SerializeObject(response);
+
+            // Set response
+            context.Response.StatusCode = (int)statusCode;
+            context.Response.ContentType = ContentTypes.APPLICATION_JSON;
+
+            // Write the response
+            await context.Response.WriteAsync(responseJsonStr);
+        }
+    }
+
+    /// <summary>
+    /// Determines the HTTP status code according to the type of error.
+    /// </summary>
+    /// <param name="ex">The exception representing the error.</param>
+    /// <returns>The corresponding HTTP status code.</returns>
+    private HttpStatusCode GetStatusCode(Exception ex)
+    {
+        // Determining Status Code according to error
+        if (ex is ArgumentNullException) return HttpStatusCode.BadRequest;
+        else if (ex is ArgumentException) return HttpStatusCode.BadRequest;
+        else if (ex is ApplicationException) return HttpStatusCode.BadRequest;
+        else if (ex is UnauthorizedAccessException) return HttpStatusCode.Unauthorized;
+        else
+        {
+            // For other errors you can use Internal Server Error as default
+            return HttpStatusCode.InternalServerError;
         }
     }
 }

@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the response object containing the count of groups.
 /// </summary>
-public class GetGroupsCountQueryResponse
+public class GetGroupsCountQueryVm
 {
     /// <summary>
     /// Gets or sets the total count of groups.
