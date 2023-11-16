@@ -1,6 +1,9 @@
 ﻿namespace IdentityService.Application.Common.Interfaces.Clients;
 
 #region Groups Http Client Models
+// DeleteGroup Model(s)
+public record DeleteGroupRequest(string Realm, string Id);
+
 // GetGroup Model(s)
 public record GetGroupRequest(string Realm, string Id);
 
@@ -26,6 +29,8 @@ public record GroupRepresentation(string Id, string Name, string Path, Dictionar
 
 public interface IGroupsHttpClient
 {
+    Task DeleteGroup(DeleteGroupRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
+
     Task<GroupRepresentation> GetGroup(GetGroupRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
     Task<GetGroupManagementPermissionsResponse> GetGroupManagementPermissions(GetGroupManagementPermissionsRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
     Task<GetGroupMembersResponse> GetGroupMembers(GetGroupMembersRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
