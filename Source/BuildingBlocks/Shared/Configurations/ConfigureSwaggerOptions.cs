@@ -35,7 +35,7 @@ public class ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) : 
         {
             Title = "IdentityService Api",
             Version = description.ApiVersion.ToString(),
-            Description = "Description for the example Web API",
+            Description = "The IdentityService API manages user identities, providing endpoints for registration, login, and identity operations.",
             Contact = new OpenApiContact { Name = "Ömer Çelik", Email = "oclk@outlook.com.tr" },
             License = new OpenApiLicense { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
         };

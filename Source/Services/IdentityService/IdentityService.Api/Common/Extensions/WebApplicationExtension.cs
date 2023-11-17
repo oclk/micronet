@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Builder;
 using Shared.Middlewares;
 
 namespace IdentityService.Api.Common.Extensions;
@@ -19,6 +20,7 @@ public static class WebApplicationExtension
 
         #region General
         app.MapControllers();
+        app.UseExceptionHandler();
         // app.UseHttpsRedirection();
         #endregion
 
@@ -43,7 +45,7 @@ public static class WebApplicationExtension
         #endregion
 
         #region Middleware(s)
-        app.UseMiddleware<ErrorHandlingMiddleware>();
+        // app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware(typeof(SecurityMiddleware));
         #endregion
 

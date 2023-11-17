@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shared.Configurations;
 using Shared.Filters;
+using Shared.Handlers;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace IdentityService.Api.Common.Extensions;
@@ -39,6 +40,8 @@ public static class ServiceCollectionExtention
             fv.RegisterValidatorsFromAssemblyContaining<Program>();
         });
 #pragma warning restore CS0618 // Type or member is obsolete
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
         #endregion
 
         #region Api Versioning Configuration(s)
