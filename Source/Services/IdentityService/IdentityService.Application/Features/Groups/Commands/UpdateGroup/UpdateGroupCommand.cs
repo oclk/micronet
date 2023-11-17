@@ -5,7 +5,7 @@ namespace IdentityService.Application.Features.Groups.Commands.UpdateGroup;
 /// <summary>
 /// Represents a command to update the details of a group.
 /// </summary>
-public class UpdateGroupCommand : IRequest
+public class UpdateGroupCommand : IRequest<UpdateGroupCommandGroupRepresentation>
 {
     /// <summary>
     /// Gets or sets the real-world identity of the group.
@@ -20,5 +20,5 @@ public class UpdateGroupCommand : IRequest
     /// <summary>
     /// Gets or sets the representation of the updated group details.
     /// </summary>
-    public UpdateGroupCommandGroupRepresentation UpdateGroupCommandGroupRepresentation { get; set; }
+    public UpdateGroupCommandGroupRepresentation GroupRepresentation { get; set; }
 }

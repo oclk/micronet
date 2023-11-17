@@ -129,7 +129,7 @@ public class GroupsController : BaseController
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("{id}/Management/Permissions")]
-    public async Task<UpdateGroupManagementPermissionsCommandManagementPermissionReference> UpdateGroupManagementPermissions(string realm, string id, [FromBody] UpdateGroupManagementPermissionsCommandManagementPermissionReference updateGroupManagementPermissionsCommandManagementPermissionReference)
+    public async Task<UpdateGroupManagementPermissionsCommandDto> UpdateGroupManagementPermissions(string realm, string id, [FromBody] UpdateGroupManagementPermissionsCommandDto updateGroupManagementPermissionsCommandManagementPermissionReference)
     {
         UpdateGroupManagementPermissionsCommand updateGroupManagementPermissionsCommand = new()
         {

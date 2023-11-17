@@ -30,14 +30,13 @@ public class GetGroupManagementPermissionsQueryHandler(IGroupsHttpClient groupsH
         Dictionary<string, string> headers = new()
         {
             { "Authorization", jwtToken }
-};
-
+        };
         #endregion
 
         // Get & Return Response
         GetGroupManagementPermissionsRequest getGroupManagementPermissionsRequest = mapper.Map<GetGroupManagementPermissionsRequest>(request);
-        GetGroupManagementPermissionsResponse getGroupManagementPermissionsResponse = await groupsHttpClient.GetGroupManagementPermissions(getGroupManagementPermissionsRequest, headers, null, cancellationToken);
-        GetGroupManagementPermissionsQueryVm response = mapper.Map<GetGroupManagementPermissionsQueryVm>(getGroupManagementPermissionsResponse);
+        GroupManagementPermissions groupManagementPermissions = await groupsHttpClient.GetGroupManagementPermissions(getGroupManagementPermissionsRequest, headers, null, cancellationToken);
+        GetGroupManagementPermissionsQueryVm response = mapper.Map<GetGroupManagementPermissionsQueryVm>(groupManagementPermissions);
 
         return response;
     }
