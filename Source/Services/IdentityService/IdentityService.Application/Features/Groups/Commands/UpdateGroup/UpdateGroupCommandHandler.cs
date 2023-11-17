@@ -11,7 +11,7 @@ namespace IdentityService.Application.Features.Groups.Commands.UpdateGroup;
 /// <param name="groupsHttpClient">The HTTP client for interacting with group-related operations.</param>
 /// <param name="httpContextAccessor">Accessor for retrieving information about the current HTTP context.</param>
 /// <param name="mapper">Automapper for mapping between different types.</param>
-public class UpdateGroupCommandHandler(IGroupsHttpClient groupsHttpClient, IHttpContextAccessor httpContextAccessor, IMapper mapper) : IRequestHandler<UpdateGroupCommand, UpdateGroupCommandGroupRepresentation>
+public class UpdateGroupCommandHandler(IGroupsHttpClient groupsHttpClient, IHttpContextAccessor httpContextAccessor, IMapper mapper) : IRequestHandler<UpdateGroupCommand, UpdateGroupCommandDto>
 {
     /// <summary>
     /// Handles the update group command and returns the updated group representation.
@@ -19,7 +19,7 @@ public class UpdateGroupCommandHandler(IGroupsHttpClient groupsHttpClient, IHttp
     /// <param name="request">The update group command.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The updated group representation.</returns>
-    public async Task<UpdateGroupCommandGroupRepresentation> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
+    public async Task<UpdateGroupCommandDto> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
     {
         #region Setup Params
         // Get or create JWT
@@ -36,7 +36,7 @@ public class UpdateGroupCommandHandler(IGroupsHttpClient groupsHttpClient, IHttp
         // Get & Return Response
         UpdateGroupRequest updateGroupRequest = mapper.Map<UpdateGroupRequest>(request);
         GroupRepresentation groupRepresentation = await groupsHttpClient.UpdateGroup(updateGroupRequest, headers, null, cancellationToken);
-        UpdateGroupCommandGroupRepresentation response = mapper.Map<UpdateGroupCommandGroupRepresentation>(groupRepresentation);
+        UpdateGroupCommandDto response = mapper.Map<UpdateGroupCommandDto>(groupRepresentation);
 
         return response;
     }

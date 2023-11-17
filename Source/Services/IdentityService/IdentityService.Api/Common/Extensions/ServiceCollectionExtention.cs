@@ -1,20 +1,29 @@
 ﻿using Asp.Versioning;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Shared.Configurations;
 using Shared.Filters;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace IdentityService.Api.Common.Extensions;
 
+/// <summary>
+/// Extension methods for adding presentation services to the service collection.
+/// </summary>
 public static class ServiceCollectionExtention
 {
+    /// <summary>
+    /// Adds presentation-related services to the specified <see cref="IServiceCollection"/>.
+    /// </summary>
+    /// <param name="services">The service collection to which services are added.</param>
+    /// <param name="configuration">The configuration providing access to application settings.</param>
+    /// <returns>The modified service collection.</returns>
     public static IServiceCollection AddPresentationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        if (configuration is null)
-        {
-            throw new ArgumentNullException(nameof(configuration));
-        }
+        ArgumentNullException.ThrowIfNull(configuration);
 
         #region General Configuration(s)
         services.AddControllers();
@@ -55,9 +64,17 @@ public static class ServiceCollectionExtention
         #endregion
 
         #region Swagger Configuration
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
         services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "IdentityService Api", Version = "v1" });
+            options.AddSecurityDefinition("Basic", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "basic",
+                In = ParameterLocation.Header,
+                Description = "Basic Authorization header using the Bearer scheme."
+            });
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,

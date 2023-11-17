@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using IdentityService.Application.Common.Interfaces.Clients;
-using IdentityService.Application.Common.Models.Clients.Groups;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 

@@ -1,11 +1,11 @@
 ﻿using IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
 
-namespace IdentityService.Application.Features.Groups.Commands.UpdateGroup;
+namespace IdentityService.Application.Features.Groups.Commands.CreateGroup;
 
 /// <summary>
 /// Represents the data structure for the response of setting or creating a sub-group within a specified group.
 /// </summary>
-public class UpdateGroupCommandGroupRepresentation
+public class CreateGroupCommandDto
 {
     /// <summary>
     /// Gets or sets the identifier of the sub-group.

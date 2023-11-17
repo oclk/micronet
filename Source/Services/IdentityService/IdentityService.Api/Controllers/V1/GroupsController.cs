@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning;
+using IdentityService.Application.Features.Groups.Commands.CreateGroup;
 using IdentityService.Application.Features.Groups.Commands.DeleteGroup;
 using IdentityService.Application.Features.Groups.Commands.SetOrCreateSubGroup;
+using IdentityService.Application.Features.Groups.Commands.UpdateGroup;
 using IdentityService.Application.Features.Groups.Commands.UpdateGroupManagementPermissions;
 using IdentityService.Application.Features.Groups.Queries.GetGroup;
 using IdentityService.Application.Features.Groups.Queries.GetGroupManagementPermissions;
@@ -12,6 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityService.Api.Controllers.V1;
 
+/// <summary>
+/// Groups
+/// </summary>
 [Route("IdentityService/Api/V{version:apiVersion}/{realm}/[controller]")]
 [ApiVersion("1.0")]
 [Authorize]
@@ -129,13 +134,13 @@ public class GroupsController : BaseController
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("{id}/Management/Permissions")]
-    public async Task<UpdateGroupManagementPermissionsCommandDto> UpdateGroupManagementPermissions(string realm, string id, [FromBody] UpdateGroupManagementPermissionsCommandDto updateGroupManagementPermissionsCommandManagementPermissionReference)
+    public async Task<UpdateGroupManagementPermissionsCommandDto> UpdateGroupManagementPermissions(string realm, string id, [FromBody] UpdateGroupManagementPermissionsCommandDto groupManagementPermissions)
     {
         UpdateGroupManagementPermissionsCommand updateGroupManagementPermissionsCommand = new()
         {
             Realm = realm,
             Id = id,
-            UpdateGroupManagementPermissionsCommandManagementPermissionReference = updateGroupManagementPermissionsCommandManagementPermissionReference,
+            GroupManagementPermissions = groupManagementPermissions,
         };
         return await Mediator.Send(updateGroupManagementPermissionsCommand);
     }
@@ -158,15 +163,40 @@ public class GroupsController : BaseController
         return await Mediator.Send(getGroupMembersQuery);
     }
 
+    /// <summary>
+    /// Update group, ignores subgroups.
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <param name="groupRepresentation"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
-    public IActionResult UpdateGroup(string realm, string id)
+    public async Task<UpdateGroupCommandDto> UpdateGroup(string realm, string id, [FromBody] UpdateGroupCommandDto groupRepresentation)
     {
-        return Ok();
+        UpdateGroupCommand updateGroupCommand = new()
+        {
+            Realm = realm,
+            Id = id,
+            GroupRepresentation = groupRepresentation,
+        };
+        return await Mediator.Send(updateGroupCommand);
     }
 
+    /// <summary>
+    /// This will update the group and set the parent if it exists. Create it and set the parent if the group doesn’t exist.
+    /// </summary>
+    /// <param name="realm"></param>
+    /// <param name="id"></param>
+    /// <param name="groupRepresentation"></param>
+    /// <returns></returns>
     [HttpPost]
-    public IActionResult CreateGroup(string realm, string id)
+    public async Task<CreateGroupCommandDto> CreateGroup(string realm, [FromBody] CreateGroupCommandDto groupRepresentation)
     {
-        return Ok();
+        CreateGroupCommand createGroupCommand = new()
+        {
+            Realm = realm,
+            GroupRepresentation = groupRepresentation,
+        };
+        return await Mediator.Send(createGroupCommand);
     }
 }
