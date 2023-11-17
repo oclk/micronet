@@ -25,7 +25,7 @@ public static class ServiceCollectionExtention
             .AddHttpClient("admin", c =>
             {
                 c.BaseAddress = new Uri($"{configuration["Keycloak:RealmUrl"]}/admin/realms/");
-                c.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
             })
             .AddStandardResilienceHandler();
 

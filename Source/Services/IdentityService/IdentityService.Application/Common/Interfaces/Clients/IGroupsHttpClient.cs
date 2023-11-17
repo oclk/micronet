@@ -2,68 +2,79 @@
 
 #region Groups Http Client Models
 /// <summary>
-/// Represents the request model for creating a group.
+/// Represents a request to create a new group.
 /// </summary>
 public record CreateGroupRequest(string Realm, GroupRepresentation GroupRepresentation);
 
 /// <summary>
-/// Represents the request model for deleting a group.
+/// Represents a request to delete a group.
 /// </summary>
 public record DeleteGroupRequest(string Realm, string Id);
 
 /// <summary>
-/// Represents the request model for retrieving a group.
+/// Represents a request to get information about a specific group.
 /// </summary>
 public record GetGroupRequest(string Realm, string Id);
 
 /// <summary>
-/// Represents the request model for retrieving group management permissions.
+/// Represents a request to get the management permissions of a group.
 /// </summary>
 public record GetGroupManagementPermissionsRequest(string Realm, string Id);
 
 /// <summary>
-/// Represents the request model for retrieving group members.
+/// Represents a request to get the members of a group.
 /// </summary>
 public record GetGroupMembersRequest(string Realm, string Id);
+
+/// <summary>
+/// Represents the response for getting group members.
+/// </summary>
 public record GetGroupMembersResponse();
 
 /// <summary>
-/// Represents the request model for retrieving groups.
+/// Represents a request to get information about groups.
 /// </summary>
-public record GetGroupsRequest(string Realm, string Id);
+public record GetGroupsRequest(string Realm);
+
+/// <summary>
+/// Represents the response for getting information about groups.
+/// </summary>
 public record GetGroupsResponse(string Id, string Name, string Path, List<GetGroupsResponse> SubGroups);
 
 /// <summary>
-/// Represents the request model for retrieving the count of groups.
+/// Represents a request to get the count of groups.
 /// </summary>
 public record GetGroupsCountRequest(string Realm);
-public record UpdateGroupManagementPermissions(long Count);
 
 /// <summary>
-/// Represents the request model for setting or creating a sub-group.
+/// Represents the response for getting the count of groups.
 /// </summary>
-public record SetOrCreateSubGroupRequest(string Realm, string Id);
+public record GetGroupsCountResponse(long Count);
 
 /// <summary>
-/// Represents the request model for updating a group.
+/// Represents a request to set or create a sub-group.
+/// </summary>
+public record SetOrCreateSubGroupRequest(string Realm, string Id, GroupRepresentation GroupRepresentation);
+
+/// <summary>
+/// Represents a request to update information about a group.
 /// </summary>
 public record UpdateGroupRequest(string Realm, string Id, GroupRepresentation GroupRepresentation);
 
 /// <summary>
-/// Represents the request model for updating group management permissions.
+/// Represents a request to update the management permissions of a group.
 /// </summary>
 public record UpdateGroupManagementPermissionsRequest(string Realm, string Id, GroupManagementPermissions GroupManagementPermissions);
 
 /// <summary>
-/// Represents the common model for a group.
+/// Represents the information about a group.
 /// </summary>
 public record GroupRepresentation(string Id, string Name, string Path, Dictionary<string, string> Attributes, List<string> RealmRoles, Dictionary<string, string> ClientRoles, List<GroupRepresentation> SubGroups, List<bool> Access);
 
 /// <summary>
-/// Represents the model for group management permissions.
+/// Represents the management permissions of a group.
 /// </summary>
 public record GroupManagementPermissions(bool Enabled, string Resource, Dictionary<string, string> ScopePermissions);
-
 #endregion
 
 /// <summary>
@@ -138,7 +149,7 @@ public interface IGroupsHttpClient
     /// <param name="queryParameters">Optional query parameters for the HTTP request.</param>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
     /// <returns>The count of groups.</returns>
-    Task<UpdateGroupManagementPermissions> GetGroupsCount(GetGroupsCountRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
+    Task<GetGroupsCountResponse> GetGroupsCount(GetGroupsCountRequest request, Dictionary<string, string> headers = null, Dictionary<string, string> queryParameters = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Sets or creates a sub-group based on the specified request parameters.

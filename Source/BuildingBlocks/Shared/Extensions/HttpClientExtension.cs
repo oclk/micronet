@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Shared.Constants;
 using System.Collections.Specialized;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 
@@ -32,6 +33,11 @@ public static class HttpClientExtension
         CancellationToken cancellationToken = default)
     {
         HttpContent httpContent = null;
+
+        if (httpClient.BaseAddress != null)
+        {
+            url = new Uri(httpClient.BaseAddress, url).ToString();
+        }
 
         #region Handle Header & QueryParameters
         if (headers != null)
@@ -89,6 +95,16 @@ public static class HttpClientExtension
     /// <returns>The modified URL with appended query parameters.</returns>
     private static string AppendQueryString(string url, Dictionary<string, string> queryParams)
     {
+        if (string.IsNullOrEmpty(url))
+        {
+            throw new ArgumentException("URL cannot be null or empty.", nameof(url));
+        }
+
+        if (queryParams == null || queryParams.Count == 0)
+        {
+            return url;
+        }
+
         UriBuilder uriBuilder = new(url);
         NameValueCollection nameValueCollection = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
 
@@ -101,7 +117,7 @@ public static class HttpClientExtension
         }
 
         uriBuilder.Query = nameValueCollection.ToString();
-        return uriBuilder.ToString();
+        return uriBuilder.Uri.ToString();
     }
 
     /// <summary>

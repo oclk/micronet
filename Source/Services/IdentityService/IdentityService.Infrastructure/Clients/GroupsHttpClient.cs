@@ -22,7 +22,7 @@ public class GroupsHttpClient(IHttpClientFactory httpClientFactory) : IGroupsHtt
         using (var httpClient = httpClientFactory.CreateClient("admin"))
         {
             // Send a RESTful request to the endpoint using the provided request parameters.
-            GroupRepresentation response = await httpClient.SendRESTRequestAsync<CreateGroupRequest, GroupRepresentation>(HttpMethod.Post, $"{request.Realm}/groups", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
+            GroupRepresentation response = await httpClient.SendRESTRequestAsync<GroupRepresentation, GroupRepresentation>(HttpMethod.Post, $"{request.Realm}/groups", request.GroupRepresentation, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
 
             // Return the obtained response containing the group count.
             return response;
@@ -42,7 +42,7 @@ public class GroupsHttpClient(IHttpClientFactory httpClientFactory) : IGroupsHtt
         using (var httpClient = httpClientFactory.CreateClient("admin"))
         {
             // Send a RESTful request to the endpoint using the provided request parameters.
-            await httpClient.SendRESTRequestAsync<DeleteGroupRequest, object>(HttpMethod.Delete, $"{request.Realm}/groups/{request.Id}", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
+            await httpClient.SendRESTRequestAsync<object, object>(HttpMethod.Delete, $"{request.Realm}/groups/{request.Id}", headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
         }
     }
 
@@ -138,13 +138,13 @@ public class GroupsHttpClient(IHttpClientFactory httpClientFactory) : IGroupsHtt
     /// <param name="queryParameters">Optional query parameters for the HTTP request.</param>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
     /// <returns>The count of groups.</returns>
-    public async Task<UpdateGroupManagementPermissions> GetGroupsCount(GetGroupsCountRequest request, Dictionary<string, string>? headers = null, Dictionary<string, string>? queryParameters = null, CancellationToken cancellationToken = default)
+    public async Task<GetGroupsCountResponse> GetGroupsCount(GetGroupsCountRequest request, Dictionary<string, string>? headers = null, Dictionary<string, string>? queryParameters = null, CancellationToken cancellationToken = default)
     {
         // Create an HTTP client specifically configured for the "groups" endpoint.
         using (var httpClient = httpClientFactory.CreateClient("admin"))
         {
             // Send a RESTful request to the endpoint using the provided request parameters.
-            UpdateGroupManagementPermissions response = await httpClient.SendRESTRequestAsync<GetGroupsCountRequest, UpdateGroupManagementPermissions>(HttpMethod.Get, $"{request.Realm}/groups/count", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
+            GetGroupsCountResponse response = await httpClient.SendRESTRequestAsync<GetGroupsCountRequest, GetGroupsCountResponse>(HttpMethod.Get, $"{request.Realm}/groups/count", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
 
             // Return the obtained response containing the group count.
             return response;
@@ -165,7 +165,7 @@ public class GroupsHttpClient(IHttpClientFactory httpClientFactory) : IGroupsHtt
         using (var httpClient = httpClientFactory.CreateClient("admin"))
         {
             // Send a RESTful request to the endpoint using the provided request parameters.
-            GroupRepresentation response = await httpClient.SendRESTRequestAsync<SetOrCreateSubGroupRequest, GroupRepresentation>(HttpMethod.Post, $"{request.Realm}/groups/{request.Id}/children", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
+            GroupRepresentation response = await httpClient.SendRESTRequestAsync<GroupRepresentation, GroupRepresentation>(HttpMethod.Post, $"{request.Realm}/groups/{request.Id}/children", request.GroupRepresentation, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
 
             // Return the obtained response containing the group count.
             return response;
@@ -186,7 +186,7 @@ public class GroupsHttpClient(IHttpClientFactory httpClientFactory) : IGroupsHtt
         using (var httpClient = httpClientFactory.CreateClient("admin"))
         {
             // Send a RESTful request to the endpoint using the provided request parameters.
-            GroupRepresentation response = await httpClient.SendRESTRequestAsync<UpdateGroupRequest, GroupRepresentation>(HttpMethod.Put, $"{request.Realm}/groups/{request.Id}", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
+            GroupRepresentation response = await httpClient.SendRESTRequestAsync<GroupRepresentation, GroupRepresentation>(HttpMethod.Put, $"{request.Realm}/groups/{request.Id}", request.GroupRepresentation, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
 
             // Return the obtained response containing the group count.
             return response;
@@ -207,7 +207,7 @@ public class GroupsHttpClient(IHttpClientFactory httpClientFactory) : IGroupsHtt
         using (var httpClient = httpClientFactory.CreateClient("admin"))
         {
             // Send a RESTful request to the endpoint using the provided request parameters.
-            GroupManagementPermissions response = await httpClient.SendRESTRequestAsync<UpdateGroupManagementPermissionsRequest, GroupManagementPermissions>(HttpMethod.Put, $"{request.Realm}/groups/{request.Id}/management/permissions", request, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
+            GroupManagementPermissions response = await httpClient.SendRESTRequestAsync<GroupManagementPermissions, GroupManagementPermissions>(HttpMethod.Put, $"{request.Realm}/groups/{request.Id}/management/permissions", request.GroupManagementPermissions, headers: headers, queryParameters: queryParameters, cancellationToken: cancellationToken);
 
             // Return the obtained response containing the group count.
             return response;

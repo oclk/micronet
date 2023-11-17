@@ -65,13 +65,13 @@ public class GroupsController : BaseController
     /// <param name="setOrCreateSubGroupCommandGroupRepresentation"></param>
     /// <returns></returns>
     [HttpPost("{id}/Children")]
-    public async Task<SetOrCreateSubGroupCommandGroupRepresentation> SetOrCreateSubGroup(string realm, string id, [FromBody] SetOrCreateSubGroupCommandGroupRepresentation setOrCreateSubGroupCommandGroupRepresentation)
+    public async Task<SetOrCreateSubGroupCommandGroupRepresentation> SetOrCreateSubGroup(string realm, string id, [FromBody] SetOrCreateSubGroupCommandGroupRepresentation groupRepresentation)
     {
         SetOrCreateSubGroupCommand setOrCreateSubGroupCommand = new()
         {
             Realm = realm,
             Id = id,
-            SetOrCreateSubGroupCommandGroupRepresentation = setOrCreateSubGroupCommandGroupRepresentation,
+            GroupRepresentation = groupRepresentation,
         };
         return await Mediator.Send(setOrCreateSubGroupCommand);
     }

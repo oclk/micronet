@@ -33,7 +33,7 @@ public class GetGroupsQueryHandler(IGroupsHttpClient groupsHttpClient, IHttpCont
         #endregion
 
         // Get & Return Response
-        GetGroupsRequest getGroupsRequest = mapper.Map<GetGroupsQuery, GetGroupsRequest>(request);
+        GetGroupsRequest getGroupsRequest = mapper.Map<GetGroupsRequest>(request);
         List<GetGroupsResponse> getGroupsResponse = await groupsHttpClient.GetGroups(getGroupsRequest, headers, request.QueryParameters, cancellationToken);
         List<GetGroupsQueryVm> response = mapper.Map<List<GetGroupsQueryVm>>(getGroupsResponse);
 

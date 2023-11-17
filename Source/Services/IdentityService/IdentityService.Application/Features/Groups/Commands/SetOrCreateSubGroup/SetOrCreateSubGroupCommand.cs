@@ -20,5 +20,5 @@ public class SetOrCreateSubGroupCommand : IRequest<SetOrCreateSubGroupCommandGro
     /// <summary>
     /// Gets or sets the representation of the sub-group to be set or created.
     /// </summary>
-    public SetOrCreateSubGroupCommandGroupRepresentation SetOrCreateSubGroupCommandGroupRepresentation { get; set; }
+    public SetOrCreateSubGroupCommandGroupRepresentation GroupRepresentation { get; set; }
 }

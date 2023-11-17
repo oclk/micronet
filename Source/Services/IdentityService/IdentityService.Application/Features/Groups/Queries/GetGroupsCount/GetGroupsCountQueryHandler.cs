@@ -33,8 +33,8 @@ public class GetGroupsCountQueryHandler(IGroupsHttpClient groupsHttpClient, IHtt
         #endregion
 
         // Get & Return Response
-        GetGroupsCountRequest getGroupsCountRequest = mapper.Map<GetGroupsCountQuery, GetGroupsCountRequest>(request);
-        UpdateGroupManagementPermissions getGroupsCountResponse = await groupsHttpClient.GetGroupsCount(getGroupsCountRequest, headers, request.QueryParameters, cancellationToken);
+        GetGroupsCountRequest getGroupsCountRequest = mapper.Map<GetGroupsCountRequest>(request);
+        GetGroupsCountResponse getGroupsCountResponse = await groupsHttpClient.GetGroupsCount(getGroupsCountRequest, headers, request.QueryParameters, cancellationToken);
         GetGroupsCountQueryVm response = mapper.Map<GetGroupsCountQueryVm>(getGroupsCountResponse);
 
         return response;
